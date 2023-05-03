@@ -304,7 +304,7 @@ def display_table( mychecklist):
     global table
     placeIDTG=7611
     dff = wt01
-    dff = dff[dff['compite_a'].isin(placeIDTG)]
+    dff = dff[dff['compite_a']==placeIDTG]
     table = pd.pivot_table(dff[['cre_id','marca','prices','dif','product']], values=['prices','dif'], index=['cre_id', 'marca'],
                     columns=['product'], aggfunc=np.mean, fill_value="-")
     #coculs = ['cre_id','Marca'] + mychecklist
@@ -322,7 +322,7 @@ def make_map(productType):
    
     df0 = wt01[wt01['product']==productType] 
     placeIDTG = 7611
-    df = df0[df0['compite_a'].isin(placeIDTG)]
+    df = df0[df0['compite_a']==placeIDTG]
     df['text'] = df['marca'] + ' ' + df['cre_id'] + ', Precio: ' + df['prices'].astype(str)
 
     citylat = 27.07562
@@ -337,7 +337,7 @@ def display_table(productTypeGraphs):
 
     placeIDTG = 7611
 
-    graphTable = tableGraphs[tableGraphs['compite_a'].isin(placeIDTG)]
+    graphTable = tableGraphs[tableGraphs['compite_a']==placeIDTG]
     graphTable = graphTable[graphTable['product']==productTypeGraphs] 
     return generate_graphs(graphTable)
 
