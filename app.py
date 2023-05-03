@@ -31,7 +31,7 @@ descargarTabla = pd.DataFrame()
 external_stylesheets = ['https://codepen.io/chriddyp/pen/bWLwgP.css']
 
 warnings.filterwarnings("ignore")
-conn_string = cf.urlDB
+conn_string = os.getenv('urlDB')
 engine = create_engine(conn_string)
 db = SQLAlchemy()
 config = configparser.ConfigParser()
@@ -63,7 +63,7 @@ login_manager.login_view = '/login'
 class Users(UserMixin, Users):
     pass
 #variables
-mapbox_access_token = cf.mapbox_access_token
+mapbox_access_token = os.getenv('mapbox_access_token')
 
 def generate_table(dataframe, max_rows=20):
     return html.Table(
