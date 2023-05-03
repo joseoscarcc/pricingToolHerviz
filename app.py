@@ -108,7 +108,7 @@ def generate_graphs(dataframe):
     df = df.reset_index()
     df = df.round(2)
     fig = px.line(df, 
-        x="date",y='prices', color='marca',title='Precios por Marca')
+        x="date",y='prices', color='marca',title='Precios por estacion CRE ID')
     return html.Div([
     dcc.Graph(figure=fig)
     ])
