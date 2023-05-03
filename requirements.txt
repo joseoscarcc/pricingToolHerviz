@@ -1,0 +1,11 @@
+dash
+dash-auth
+pandas
+requests
+flask
+flask-sqlalchemy
+flask-login
+configparser
+psycopg2
+sqlalchemy
+gunicorn
