@@ -11,7 +11,6 @@ import warnings
 import os
 from flask_login import login_user, logout_user, current_user, LoginManager, UserMixin
 import configparser
-import config as cf
 import getPrices
 import pandas as pd
 import numpy as np
