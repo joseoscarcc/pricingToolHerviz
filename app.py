@@ -349,12 +349,12 @@ def display_costs(dropdownCosts):
     if dropdownCosts is None:
         costoTerminal = costos01[costos01.terminal.str.contains('NAVOJOA')]
     else:
-        costoTerminal = costos01[costos01.terminal.str.contains('|'.join(dropdownCosts))]
+        costoTerminal = costos01[costos01.terminal.str.contains(dropdownCosts)]
 
     if dropdownCosts is None:
         costoTerminal02 = costos02[costos02.terminal.str.contains('NAVOJOA')]
     else:
-        costoTerminal02 = costos02[costos02.terminal.str.contains('|'.join(dropdownCosts))]
+        costoTerminal02 = costos02[costos02.terminal.str.contains(dropdownCosts)]
       
     return generate_costs(costoTerminal,costoTerminal02)
 
