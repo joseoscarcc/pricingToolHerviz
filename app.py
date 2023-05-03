@@ -142,7 +142,7 @@ def generate_costs(tc01, tc02):
     ], style={'text-align': 'center'})
 
 tab1 = html.Div([
-            html.H4(children='Estaciones de Servicio JOJUMA BI Pricing Tool DEMO'),
+            html.H4(children='Estaciones de Servicio JOJUMA BI Pricing Tool HERVIZ'),
                 dcc.Checklist(
                     id='mychecklist',
                     options = ['regular', 'premium', 'diesel'],
@@ -159,7 +159,7 @@ tab1 = html.Div([
 
 tab2 = html.Div([
             html.H4(children='Mapa de Estaciones de Servicio'),
-                dcc.Dropdown(['Tijuana', 'Hermosillo', 'Torreon', 'Merida', 'Puebla'], 'Tijuana', id='dropdownMapa'),
+                dcc.Dropdown(['Navojoa'], 'Navojoa', id='dropdownMapa'),
                 dcc.RadioItems(
                     ['regular', 'premium','diesel'], 'regular',
                     id='productType',
@@ -233,7 +233,7 @@ login =  html.Div([dcc.Location(id='url_login', refresh=True)
 #                 ]) #end div
 #         ]) #end div
 data = html.Div([
-    html.H1('JOJUMA BI Pricing Tool - DEMO'),
+    html.H1('JOJUMA BI Pricing Tool - HERVIZ'),
     dcc.Tabs(id="tabs-example", value='tab-1', children=[
         dcc.Tab(id="tab-1", label='Precios', value='tab-1'),
         dcc.Tab(id="tab-2", label='Mapa', value='tab-2'),
@@ -332,7 +332,6 @@ def display_table(dropdown, mychecklist):
     table.columns = table.columns.map('|'.join).str.strip('|')
     table = table.round(2)
     table = table.reset_index()
-    #newTable = pd.concat([table[table["marca"] == 'TOTAL GAS'],table[table['marca'] != 'TOTAL GAS']])
     return generate_table(table)
 
 @app.callback(
@@ -346,21 +345,9 @@ def make_map(dropdownMapa, productType):
     df = df0[df0['compite_a'].isin(placeIDTG)]
     df['text'] = df['marca'] + ' ' + df['cre_id'] + ', Precio: ' + df['prices'].astype(str)
 
-    if dropdownMapa == 'Hermosillo':
-        citylat = 29.06933
-        citylon = -110.9706
-    elif dropdownMapa == "Merida":
-        citylat = 20.94868
-        citylon = -89.64977
-    elif dropdownMapa == "Puebla":
-        citylat = 19.0257
-        citylon = -98.20509
-    elif dropdownMapa == "Torreon":
-        citylat = 25.54993
-        citylon = -103.4232
-    elif dropdownMapa == "Tijuana":
-        citylat = 32.51887
-        citylon = -117.0121
+    if dropdownMapa == 'Navojoa':
+        citylat = 27.07562
+        citylon = -109.4898
 
     return generate_map(df,citylat,citylon)
 
@@ -371,7 +358,7 @@ def make_map(dropdownMapa, productType):
 def display_table(dropdownGraphs, productTypeGraphs):
 
     if dropdownGraphs is None:
-        placeIDTG = TGSites['place_id'][TGSites.cre_id.str.contains('PL/640/EXP/ES/2015')]
+        placeIDTG = TGSites['place_id'][TGSites.cre_id.str.contains('PL/6499/EXP/ES/2015')]
     else:
         placeIDTG = TGSites['place_id'][TGSites.cre_id.str.contains('|'.join(dropdownGraphs))]
 
@@ -385,12 +372,12 @@ def display_table(dropdownGraphs, productTypeGraphs):
 def display_costs(dropdownCosts):
 
     if dropdownCosts is None:
-        costoTerminal = costos01[costos01.terminal.str.contains('AZCAPOTZALCO')]
+        costoTerminal = costos01[costos01.terminal.str.contains('NAVOJOA')]
     else:
         costoTerminal = costos01[costos01.terminal.str.contains('|'.join(dropdownCosts))]
 
     if dropdownCosts is None:
-        costoTerminal02 = costos02[costos02.terminal.str.contains('AZCAPOTZALCO')]
+        costoTerminal02 = costos02[costos02.terminal.str.contains('NAVOJOA')]
     else:
         costoTerminal02 = costos02[costos02.terminal.str.contains('|'.join(dropdownCosts))]
       
