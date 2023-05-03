@@ -103,12 +103,12 @@ def generate_map(dataframe,citylat,citylon):
     ])
 
 def generate_graphs(dataframe):
-    df = dataframe.pivot_table(values='prices', index=['date','cre_id'], aggfunc=[np.mean])
+    df = dataframe.pivot_table(values='prices', index=['date','marca'], aggfunc=[np.mean])
     df.columns = df.columns.droplevel(0)
     df = df.reset_index()
     df = df.round(2)
     fig = px.line(df, 
-        x="date",y='prices', color='marca',title='Precios por estacion CRE ID')
+        x="date",y='prices', color='marca',title='Precios por Marca')
     return html.Div([
     dcc.Graph(figure=fig)
     ])
