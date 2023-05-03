@@ -149,9 +149,6 @@ tab1 = html.Div([
                     value = ['regular'],
                     inline=True
                 ),
-                dcc.Dropdown(id='dropdown', options=[
-                    {'label': i, 'value': i} for i in TGSites.cre_id.unique()
-                ], multi=True, placeholder='Filter by Permiso CRE...'),
                 html.Div(id='table-container'),
                 html.Button("Download CSV", id="btn_csv"),
                 dcc.Download(id="download-dataframe-csv"),
@@ -159,7 +156,6 @@ tab1 = html.Div([
 
 tab2 = html.Div([
             html.H4(children='Mapa de Estaciones de Servicio'),
-                dcc.Dropdown(['Navojoa'], 'Navojoa', id='dropdownMapa'),
                 dcc.RadioItems(
                     ['regular', 'premium','diesel'], 'regular',
                     id='productType',
@@ -170,9 +166,6 @@ tab2 = html.Div([
 
 tab3 = html.Div([
             html.H4(children='Gráficas precios últimos 30 días'),
-                dcc.Dropdown(id='dropdownGraphs', options=[
-                    {'label': i, 'value': i} for i in TGSites.cre_id.unique()
-                ], multi=True, placeholder='Filter by Permiso CRE...'),
                 dcc.RadioItems(
                     ['regular', 'premium','diesel'], 'regular',
                     id='productTypeGraphs',
@@ -185,7 +178,7 @@ tab4 = html.Div([
             html.H4(children='COSTOS PEMEX'),
                 dcc.Dropdown(id='dropdowncostos', options=[
                     {'label': i, 'value': i} for i in costos01.terminal.unique()
-                ], multi=True, placeholder='Escoge la terminal mas cercana...'),
+                ], multi=False, placeholder='Escoge la terminal mas cercana...'),
                 html.Div(id='container_costs')
 ])
 # create = html.Div([ html.H1('Create User Account')
@@ -242,14 +235,6 @@ data = html.Div([
     ]),
     html.Div(id='tabs-content',
              children = [tab1,tab2,tab3,tab4]),
-    
-    # html.Div([dcc.Dropdown(
-    #                 id='dropdown',
-    #                 options=[{'label': i, 'value': i} for i in ['Day 1', 'Day 2']],
-    #                 value='Day 1')
-    #             , html.Br()
-    #             , html.Div([dcc.Graph(id='graph')])
-    #         ]) #end div
      html.Div([html.Br()
              , html.Button(id='back-button', children='Go back', n_clicks=0)
               ]) #end div
@@ -314,14 +299,10 @@ def render_content(tab):
         return tab4
 @app.callback(
     Output('table-container', 'children'),
-    Input('dropdown', 'value'),
     Input('mychecklist','value'))
-def display_table(dropdown, mychecklist):
+def display_table( mychecklist):
     global table
-    if dropdown is None:
-        placeIDTG = TGSites['place_id'].to_list()
-    else:
-        placeIDTG = TGSites['place_id'][TGSites.cre_id.str.contains('|'.join(dropdown))]
+    placeIDTG=7611
     dff = wt01
     dff = dff[dff['compite_a'].isin(placeIDTG)]
     table = pd.pivot_table(dff[['cre_id','marca','prices','dif','product']], values=['prices','dif'], index=['cre_id', 'marca'],
@@ -336,31 +317,25 @@ def display_table(dropdown, mychecklist):
 
 @app.callback(
     Output('dd-output-container', 'children'),
-    Input('dropdownMapa', 'value'),
     Input('productType','value'))
-def make_map(dropdownMapa, productType):
+def make_map(productType):
    
     df0 = wt01[wt01['product']==productType] 
-    placeIDTG = TGSites['place_id'][TGSites['municipio']==dropdownMapa]
+    placeIDTG = 7611
     df = df0[df0['compite_a'].isin(placeIDTG)]
     df['text'] = df['marca'] + ' ' + df['cre_id'] + ', Precio: ' + df['prices'].astype(str)
 
-    if dropdownMapa == 'Navojoa':
-        citylat = 27.07562
-        citylon = -109.4898
+    citylat = 27.07562
+    citylon = -109.4898
 
     return generate_map(df,citylat,citylon)
 
 @app.callback(
     Output('container_graphs', 'children'),
-    Input('dropdownGraphs', 'value'),
     Input('productTypeGraphs','value'))
-def display_table(dropdownGraphs, productTypeGraphs):
+def display_table(productTypeGraphs):
 
-    if dropdownGraphs is None:
-        placeIDTG = TGSites['place_id'][TGSites.cre_id.str.contains('PL/6499/EXP/ES/2015')]
-    else:
-        placeIDTG = TGSites['place_id'][TGSites.cre_id.str.contains('|'.join(dropdownGraphs))]
+    placeIDTG = 7611
 
     graphTable = tableGraphs[tableGraphs['compite_a'].isin(placeIDTG)]
     graphTable = graphTable[graphTable['product']==productTypeGraphs] 
