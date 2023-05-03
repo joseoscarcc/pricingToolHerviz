@@ -2,8 +2,8 @@
 import psycopg2
 import pandas as pd
 import datetime
-import config
-  
+import os
+
 # establish connections
 conn1 = psycopg2.connect(database=os.getenv("db"),
                          host=os.getenv("hosting"),
