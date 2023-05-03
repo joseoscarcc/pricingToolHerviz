@@ -341,7 +341,7 @@ def display_table(dropdown, mychecklist):
 def make_map(dropdownMapa, productType):
    
     df0 = wt01[wt01['product']==productType] 
-    placeIDTG = TGSites['place_id'][TGSites['Municipio']==dropdownMapa]
+    placeIDTG = TGSites['place_id'][TGSites['municipio']==dropdownMapa]
     df = df0[df0['compite_a'].isin(placeIDTG)]
     df['text'] = df['marca'] + ' ' + df['cre_id'] + ', Precio: ' + df['prices'].astype(str)
 
